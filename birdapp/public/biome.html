@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+    <title>Bird Sightings by Biome</title>
+    <link type="text/css" rel="stylesheet" href="elegant-aero.css" />
+    <style>
+        body {
+            background-image: url("background.jpg");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: auto;
+            background-attachment: fixed;
+            background-color: white;
+        }
+
+        form.elegant-aero {
+            width: 600px;
+            margin: 1em auto;
+            padding: 1em;
+            background: #FFFFFF;
+        }
+
+        form.elegant-aero input[type="text"] {
+            width: 90%;
+            padding: 6px;
+            font-size: 14px;
+        }
+
+        iframe {
+            display: block;
+            width: 70%;
+            height: 400px;
+            margin: 2em auto;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<h2 style="text-align:center;">Check Bird Sightings by Biome</h2>
+
+<form action="/biome_results.html" method="get" target="results_iframe" class="elegant-aero">
+    <label>
+        <span>Biome (Full Name):</span>
+        <input type="text" name="biome" placeholder="e.g. Central Corn Belt Plains" required />
+    </label>
+    <label>
+        <span>Species (Scientific Name):</span>
+        <input type="text" name="species" placeholder="e.g. Cardinalis cardinalis" required />
+    </label>
+    <label>
+        <span></span>
+        <input type="submit" value="Submit" />
+    </label>
+</form>
+
+<p style="text-align:left; margin-top: 1.5em; font-size: 15px;">
+    Example Queries below. A full list of the biome names and map are included in this pdf document:
+    <a href="https://dmap-prod-oms-edc.s3.us-east-1.amazonaws.com/ORD/Ecoregions/cec_na/NA_LEVEL_III.pdf"
+       target="_blank"
+       style="color: #0033cc; text-decoration: underline;">
+        North American Level III Ecoregions (PDF)
+    </a>
+</p>
+
+<table class="examples">
+    <tr>
+        <th>Biome</th>
+        <th>Species</th>
+    </tr>
+    <tr><td>Central Corn Belt Plains</td><td>Cardinalis cardinalis</td></tr>
+    <tr><td>Central Corn Belt Plains</td><td>Junco hyemalis</td></tr>
+    <tr><td>Ozark Highlands</td><td>Setophaga ruticilla</td></tr>
+    <tr><td>Ozark Highlands</td><td>Baeolophus bicolor</td></tr>
+    <tr><td>Atlantic Coastal Pine Barrens</td><td>Turdus migratorius</td></tr>
+    <tr><td>Atlantic Coastal Pine Barrens</td><td>Agelaius phoeniceus</td></tr>
+    <tr><td>California Coastal Sage, Chaparral, and Oak Woodlands</td><td>Poecile atricapillus</td></tr>
+    <tr><td>California Coastal Sage, Chaparral, and Oak Woodlands</td><td>Corvus corax</td></tr>
+    <tr><td>South Central Plains</td><td>Anas platyrhynchos</td></tr>
+    <tr><td>South Central Plains</td><td>Aythya affinis</td></tr>
+</table>
+
+<iframe name="results_iframe"></iframe>
+</body>
+</html>

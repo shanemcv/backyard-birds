@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+  <head>
+    <title>Bird Sightings</title>
+    <link type="text/css" rel="stylesheet" href="table.css" />
+  </head>
+  <body>
+    <div style="margin-left:275px;margin-right:auto;display:inline-block;box-shadow: 10px 10px 5px #888888;
+                border:1px solid #000000;
+                border-radius: 9px;
+                background:white">
+      &nbsp;Bird Sightings in {{state}} for {{species}}&nbsp;
+    </div>
+
+    <p style="margin-bottom:10px">
+      <table class="CSS_Table_Example" style="width:60%;margin:auto;">
+        <tr>
+          <th>State</th>
+          <th>Species</th>
+          <th>Sightings</th>
+        </tr>
+        <tr>
+          <td>{{state}}</td>
+          <td>{{species}}</td>
+          <td>{{sightings}}</td>
+        </tr>
+      </table>
+    </p>
+  </body>
+</html>

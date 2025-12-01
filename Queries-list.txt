@@ -1,0 +1,34 @@
+============================================================
+Data Queries to Answer for Backyard Bird Dataset
+============================================================
+
+=======================================================
+Species & Biodiversity Patterns
+=======================================================
+
+(1) Bird Rarity: Which species are observed most, and which are rarely reported?
+
+(2) Location frequency: Which cities/states/counties have the most and least (above 0) bird species observed?
+
+(3) Time-based patterns: Do certain species show spikes in observations at particular times (day, week, or month)?
+
+=======================================================
+Geographic Patterns
+=======================================================
+
+(1) Urban vs. rural observations: Are some birds relatively more common in cities vs. rural areas? 
+This may be difficult to answer due to more frequent reports in cities. Could be proportional
+
+=======================================================
+Time-based trends
+=======================================================
+
+(1) Year-over-year changes in bird count (increasing or decreasing)
+
+(2) Seasonality: Identify migratory birds based on seasonal appearance patterns.
+
+=======================================================
+Advanced / Ecological Questions
+=======================================================
+
+(1) Co-occurrence networks: Which birds are most likely to be seen together

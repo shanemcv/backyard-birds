@@ -1,0 +1,205 @@
+====================================
+BIG DATA APPLICATION PROJECT STEPS
+====================================
+
+(1) Find the appropriate CSV file (I used birds.csv from GBIF, which is 3.3 GB)
+
+(2) Download the file to local
+ 
+(3) Move the file to the cluster with scp 
+scp -i ~/.ssh/id_rsa /home/shane/Documents/mpcs53014/project/birds1000.csv hadoop@ec2-34-230-47-10.compute-1.amazonaws.com:/home/hadoop/smcveigh
+
+(4) Add the appropriate SSH config in IntelliJ Settings > Tools > SSH Configurations (bigdatalectures.pdf) (page 98 or 491)
+/home/shane/.ssh/id_rsa -- ec2-35-172-128-110.compute-1.amazonaws.com
+Also, create the Web SSH connection, if the webserver is different as recommended (see page 490 for general webserver instructions)
+You will have to do more IntelliJ setup for the webserver as well later (page 491)
+
+(5) You have two options for creating tables in HQL on the cluster:
+(a) Using the ingest archetype on IntelliJ to create (this is more complex but allows for some customization of SerDes, etc)
+(b) Creating a .hql script to ingest the existing csv data (see hive_ontime.hql from Lecture 3 files). This is for more simple ingestion
+
+I created a new inputs directory to hold the HQL text file that would be read from the .hql script. This was done with
+hdfs dfs -mkdir smcveigh/inputs after hdfs dfs -mkdir smcveigh
+Then only move the full file (cannot use both test and full - avoid duplicating data) to hdfs
+hdfs dfs -put /home/hadoop/smcveigh/birds.csv smcveigh/inputs
+
+The .hql script I developed in vscode based on hive_ontime.hql. It is called "ingest_birds.hql" in my project folder. 
+
+(6) Run beeline on the cluster and progress through the HQL statements one-by-one. 
+beeline -u 'jdbc:hive2://localhost:10000/default' -n hadoop
+Create the CSV table with copy/paste. Should get "no rows affected"
+Then run the test SELECT:
+select species,decimalLatitude,decimalLongitude from smcveigh_birds_csv limit 5;
+
+(7) Create ORC table (I added some rounded values for this for lat and long). This is from the same ingest_birds.hql file
+
+(8) [OPTIONAL] - I wanted to map my bird sightings to biomes (this is why I used rounded csv). So I needed to find/create a dataset for 
+biome mapping based on rounded lat/long
+I ended up using a .shp (shape file) from https://www.epa.gov/eco-research/ecoregions-north-america (Level 3)
+then a .01 grid, which is about 60 million rows in the resulting CSV
+Need to move that to cluster (and then HDFS) similar to Step (3) 
+scp -i ~/.ssh/id_rsa /home/shane/Documents/mpcs53014/project/biome_lookup.csv hadoop@ec2-34-230-47-10.compute-1.amazonaws.com:/home/hadoop/smcveigh
+
+(9) The biomes need to be in a different folder than the birds, otherwise it causes issues with the table creation
+I used the script ingest_biomes.hql (located in project folder) to create the biome table, which exists as a subfolder to the inputs/ folder on hdfs
+
+(10) Make sure the tables work. Tons of sample queries in ingest_birds.hql and ingest_biomes.hql
+
+(11) Need to join the birds and biomes to map biome lookup
+Reference: join_flights_to_weather.hql from lecture 3 files
+Created join_birds to biomes and ran beeline (step 6) and processed the table
+
+(12) Pre-compute batches and store them in hbase
+This was done just with the route summary in the flights and weather example 
+(route_delays.hql to make the table, then write_to_hbase.hql as the example)
+Each view that must be surfaced will require a page in the eventual web application
+Start with one hbase view and then add more, once the web app is created later
+
+I chose to create 4 table batches: 
+(1) # of bird sightings by state
+(2) # of bird sightings by biome
+(3) Most common states by bird (this actually doesn't need to be a different table from 1) 
+(4) States by bird and month (useful for migration patterns)
+
+(13) There are some specifics that are needed to create the hbase tables (see create_hbase_views.hql)
+In particular, you need to create the hbase table in 'hbase shell' first with the right column families
+See the hql file for more implementation details
+
+(14) There are only two steps left. Creating the speed layer and creating the front-end. 
+It is feasible to do this in either order, but it is suggested to finish the speed layer to have the full backend available,
+before completing the frontend. 
+
+(15) Create the 'scratch table' in Hbase that Kafka (speed layer) will stream to. 
+Implementation details are in create_kafka_table.hql in the project folder. 
+
+(16) Create the Kafka topic. Refer to page 404 in lecture notes. 
+The kafka executables below are in /home/hadoop/kafka/bin
+kafka-topics.sh --bootstrap-server boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196 --command-config ../../kafka.client.properties --create --topic smcveigh_bird_observations --partitions 3 --replication-factor 3
+Topic name: --topic smcveigh_bird_observations
+
+[hadoop@ip-172-31-91-77 bin]$ kafka-topics.sh --bootstrap-server boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196 \
+  --command-config ../../kafka.client.properties \
+  --describe --topic smcveigh_bird_observations
+Topic: smcveigh_bird_observations	TopicId: o1cQlcWZRYeigaFCGY92zQ	PartitionCount: 3	ReplicationFactor: 3	Configs: message.format.version=3.0-IV1,min.insync.replicas=2,unclean.leader.election.enable=false,message.timestamp.after.max.ms=86400000,message.timestamp.before.max.ms=86400000,message.timestamp.difference.max.ms=86400000
+	Topic: smcveigh_bird_observations	Partition: 0	Leader: 3	Replicas: 3,2,1	Isr: 3,2,1	Elr: N/A	LastKnownElr: N/A
+	Topic: smcveigh_bird_observations	Partition: 1	Leader: 1	Replicas: 1,3,2	Isr: 1,3,2	Elr: N/A	LastKnownElr: N/A
+	Topic: smcveigh_bird_observations	Partition: 2	Leader: 2	Replicas: 2,1,3	Isr: 2,1,3	Elr: N/A	LastKnownElr: N/A
+
+
+(17) Update the speed-layer-weather archetype .scala code to work with my bird ingestion pipeline
+This is done in IntelliJ and then deployed to the cluster appropriately. 
+You'll need to add the Kafka password in the .scala source. This is located in /home/hadoop/kafka.client.properties file on our cluster. 
+username is mpcs53014-2025
+In StreamBirdObservations.scala:
+"sasl.jaas.config" -> ("org.apache.kafka.common.security.scram.ScramLoginModule required " + "username=\"mpcs53014-2025\" password=\"Kafka password here\";")
+
+Once finished with the code updates in the two .scala files, need to build and deploy the uberjar to the cluster. 
+^See page 116 for instructions on this. Make sure to set the deployment mappings first as described starting page 119
+
+(18) Fix any build errors, I needed to install a new JDK (JDK 8)
+sudo apt install openjdk-8-jdk
+Or use the coretto 1.8 I already had installed. 
+Change in Project Structure. 
+In pom.xml:
+<mainClass>StreamBirdObservations</mainClass>
+Then deploy the uberjar to cluster 
+
+
+(19) Run the uberjar from the location on cluster
+Uberjar name: uber-smcveigh-speed-layer-birds-1.0-SNAPSHOT.jar
+java -cp uber-smcveigh-speed-layer-birds-1.0-SNAPSHOT.jar boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196
+java -cp uber-smcveigh-speed-layer-birds-1.0-SNAPSHOT.jar StreamBirdObservations boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196
+java -cp "uber-smcveigh-speed-layer-birds-1.0-SNAPSHOT.jar:~/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.20.1/jackson-databind-2.20.1.jar:~/.m2/repository/com/fasterxml/jackson/module/jackson-module-scala_2.12/2.20.1/jackson-module-scala_2.12-2.20.1.jar:..." StreamBirdObservations boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196
+
+(20) Spark-submit the uberjar
+spark-submit \
+  --driver-java-options "-Dlog4j.configuration=file:///home/hadoop/log4j.properties" \
+  --master local[2] \
+  --class smcveigh.StreamBirdObservations \
+  target/uber-smcveigh-speed-layer-birds-1.0-SNAPSHOT.jar \
+  boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196
+  
+Make sure to run this in the main project directory!! Not target
+
+This will run the speed layer in kafka backend
+
+(21) Create and configure the web ssh connection in IntelliJ (as described in page 491 of lecture slides)
+(22) Unzip the weather app to birdapp
+(23) Create new deployment target in build, execution, deployment (p 493)
+
+(24) Change the mustache, index, submit, and app.js files appropriately to render results for birds instead
+Make sure to update the kafka password
+
+(25) ssh ec2-user@ec2-52-20-203-80.compute-1.amazonaws.com
+Ssh to the webserver
+
+(26) Go to the uploaded directory
+cd smcveigh/birdapp
+
+(27) Run the webserver (it should be running automatically based on the auto-upload configuration)
+Move all the files if they haven't yet:
+scp -r /home/shane/Documents/mpcs53014/birdapp ec2-user@ec2-52-20-203-80.compute-1.amazonaws.com:/home/ec2-user/smcveigh/
+npm install
+
+node app.js 3007 http://ec2-34-230-47-10.compute-1.amazonaws.com:8070
+
+(28) Browse to the webpage
+http://ec2-52-20-203-80.compute-1.amazonaws.com:3007/index.html
+
+(29) Test by submitting a query for Illinois and Junco hyemalis
+Should get 11339
+
+(30) Whenever changes are made to the app, run
+(a) scp -r /home/shane/Documents/mpcs53014/birdapp ec2-user@ec2-52-20-203-80.compute-1.amazonaws.com:/home/ec2-user/smcveigh/
+(b) On ec2 web-server, npm install, then:
+(c) node app.js 3007 http://ec2-34-230-47-10.compute-1.amazonaws.com:8070
+(d) http://ec2-52-20-203-80.compute-1.amazonaws.com:3007/index.html webpage in local browser
+
+(31) Updated app.js and submit-birds.html to publish to Kafka topic
+Check the hbase table smcveigh_bird_observations in beehive
+beeline -u 'jdbc:hive2://localhost:10000/default' -n hadoop
+select * from smcveigh_bird_observations limit 10;
+
+(32) Check that the topic is getting results
+kafka-console-consumer.sh --bootstrap-server boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196 --consumer.config ~/kafka.client.properties --topic smcveigh_bird_observations --from-beginning
+{"state":"Maine","species":"Corvus corax"}
+^CProcessed a total of 1 messages
+
+(33) Fix up your problems with state vs stateProvince in the app and the scala code. 
+
+(34) Run the app with running the following:
+(WebServer) 
+ssh ec2-user@ec2-52-20-203-80.compute-1.amazonaws.com
+cd smcveigh/birdapp
+node app.js 3007 http://ec2-34-230-47-10.compute-1.amazonaws.com:8070
+
+(Speed Layer) 
+ssh hadoop@ec2-34-230-47-10.compute-1.amazonaws.com
+cd smcveigh/smcveigh-speed-layer-birds/
+spark-submit \
+  --driver-java-options "-Dlog4j.configuration=file:///home/hadoop/log4j.properties" \
+  --master local[2] \
+  --class smcveigh.StreamBirdObservations \
+  target/uber-smcveigh-speed-layer-birds-1.0-SNAPSHOT.jar \
+  boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196
+  
+(Website) Browse to 
+(a) http://ec2-52-20-203-80.compute-1.amazonaws.com:3007/index.html [For viewing bird by state results]
+(b) http://ec2-52-20-203-80.compute-1.amazonaws.com:3007/biome.html [For viewing bird by biome results]
+(c) http://ec2-52-20-203-80.compute-1.amazonaws.com:3007/submit-birds.html 
+[For submitting bird observations to speed layer, this can be combined with (a) to view updates in real time]
+
+(Monitor Kafka Topic)
+ssh hadoop@ec2-34-230-47-10.compute-1.amazonaws.com
+cd kafka/bin/
+kafka-console-consumer.sh --bootstrap-server boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196 --consumer.config ~/kafka.client.properties --topic smcveigh_bird_observations --from-beginning
+
+
+
+----
+SparkML idea: Predict state based on bird sighting and month? Or month based on bird sighting and state? 
+
+
+
+
+

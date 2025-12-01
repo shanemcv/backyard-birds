@@ -1,0 +1,2 @@
+ssh hadoop@ec2-34-230-47-10.compute-1.amazonaws.com
+cd smcveigh

@@ -11,12 +11,7 @@ ssh hadoop@ec2-34-230-47-10.compute-1.amazonaws.com
 
 cd smcveigh/smcveigh-speed-layer-birds/
 
-spark-submit \
-  --driver-java-options "-Dlog4j.configuration=file:///home/hadoop/log4j.properties" \
-  --master local[2] \
-  --class smcveigh.StreamBirdObservations \
-  target/uber-smcveigh-speed-layer-birds-1.0-SNAPSHOT.jar \
-  boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196
+spark-submit --driver-java-options "-Dlog4j.configuration=file:///home/hadoop/log4j.properties" --master local[2] --class smcveigh.StreamBirdObservations target/uber-smcveigh-speed-layer-birds-1.0-SNAPSHOT.jar boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196
 
 # (Website) 
 Browse to 

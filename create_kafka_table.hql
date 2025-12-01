@@ -27,6 +27,8 @@ Took 1.3477 seconds
 -- ultimately decided to 'copy' the smcveigh_birds_by_state_hbase to a new table for the speed layer
 
 -- HBASE TABLE
+-- disable 'smcveigh_birds_by_state_speed'
+-- drop 'smcveigh_birds_by_state_speed'
 -- First, need to create the hbase table in hbase shell
 -- hbase shell
 -- create 'smcveigh_birds_by_state_speed', 'info', 'stats'
@@ -60,3 +62,7 @@ where state_species = 'Illinois_Junco hyemalis';
 +------------+
 | 11339      |
 +------------+
+
+select sightings
+from smcveigh_birds_by_state_speed
+where state_species = 'Illinois_Cardinalis cardinalis';

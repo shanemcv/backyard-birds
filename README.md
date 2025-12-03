@@ -11,7 +11,9 @@ Located in RunInstructions.md
 
 ## Other Information: 
 App is running with PM2 on webserver under "smcveigh_app": 
+
 [PM2] Starting /home/ec2-user/smcveigh/birdapp/app.js in fork_mode (1 instance)
+
 [PM2] Done.
 ┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
 │ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │

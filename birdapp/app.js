@@ -108,7 +108,7 @@ const kafkajsClient = new Kafka({
 	sasl: {
 		mechanism: 'scram-sha-512',
 		username: 'mpcs53014-2025',
-		password: 'A3v4rd4@ujjw'
+		password: 'replacewithpassword'
 	},
 	connectionTimeout: 10000,
 	requestTimeout: 30000

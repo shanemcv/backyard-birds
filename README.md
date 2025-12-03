@@ -15,8 +15,7 @@ App is running with PM2 on webserver under "smcveigh_app":
 [PM2] Starting /home/ec2-user/smcveigh/birdapp/app.js in fork_mode (1 instance)
 
 [PM2] Done.
-┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
-│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
-├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
-│ 4  │ smcveigh_app       │ fork     │ 0    │ online    │ 0%       │ 19.3mb   │
-└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+
+| id | name         | mode | ↺ | status | cpu | memory |
+|----|--------------|------|---|--------|-----|--------|
+| 4  | smcveigh_app | fork | 0 | online | 0%  | 19.3mb |

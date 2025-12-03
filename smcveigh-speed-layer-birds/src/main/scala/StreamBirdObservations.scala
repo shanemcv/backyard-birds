@@ -53,7 +53,7 @@ object StreamBirdObservations {
       "enable.auto.commit" -> (false: java.lang.Boolean),
       "security.protocol" -> "SASL_SSL",
       "sasl.mechanism" -> "SCRAM-SHA-512",
-      "sasl.jaas.config" -> ("org.apache.kafka.common.security.scram.ScramLoginModule required " + "username=\"mpcs53014-2025\" password=\"A3v4rd4@ujjw\";")
+      "sasl.jaas.config" -> ("org.apache.kafka.common.security.scram.ScramLoginModule required " + "username=\"mpcs53014-2025\" password=\"replacewithpassword\";")
 
     )
     val stream = KafkaUtils.createDirectStream[String, String](

@@ -29,6 +29,8 @@ Took 1.3477 seconds
 -- HBASE TABLE
 -- disable 'smcveigh_birds_by_state_speed'
 -- drop 'smcveigh_birds_by_state_speed'
+-- in beeline: 
+-- drop table if exists smcveigh_birds_by_state_speed;
 -- First, need to create the hbase table in hbase shell
 -- hbase shell
 -- create 'smcveigh_birds_by_state_speed', 'info', 'stats'
@@ -66,3 +68,10 @@ where state_species = 'Illinois_Junco hyemalis';
 select sightings
 from smcveigh_birds_by_state_speed
 where state_species = 'Illinois_Cardinalis cardinalis';
+
++------------+
+| sightings  |
++------------+
+| 12796      |
++------------+
+

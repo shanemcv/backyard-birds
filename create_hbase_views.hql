@@ -71,7 +71,7 @@ select stateProvince, sightings
 from smcveigh_birds_by_state
 where species = 'Bubo virginianus'-- great horned owl
 order by sightings desc
-limit 60; -- should get all
+limit 10; -- should get all
 
 +----------------------------+------------+
 |       stateprovince        | sightings  |

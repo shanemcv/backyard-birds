@@ -78,7 +78,7 @@ app.get('/biome_results.html',function (req, res) {
     hclient.table('smcveigh_birds_by_biome_hbase').row(rowKey).get((err, row) => {
         if (err) {
             console.error('Error fetching data from HBase:', err);
-            return res.send('Error fetching data from HBase');
+            return res.send('There were no sightings of that species and biome combination.');
         }
 
         const stats = rowToMap(row);

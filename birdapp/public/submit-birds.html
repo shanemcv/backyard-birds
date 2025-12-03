@@ -1,29 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Submit Bird Sighting</title>
-    <link type="text/css" rel="stylesheet" href="/elegant-aero.css" />
-</head>
-<body style='background-image:URL("background.jpg");background-repeat:no-repeat;background-position:center center;background-size: auto;background-attachment: fixed;background-color: white;'>
-<h2 class="elegant-aero" style="margin-left:30%;text-align:center;display:inline-block;color:#5E5E5E;background:#FFFFFF">
-    &nbsp;Submit Bird Sighting&nbsp;
-</h2>
+<title>Submit Bird Sighting</title>
+<style>
 
-<form action="/birds.html" style="background:#FFFFFF;width:60%;margin:auto"
-      method="get" class="elegant-aero">
-    <label>
-        <span>Species:</span>
-        <input type="text" name="species" placeholder="Enter species"/>
-    </label>
-    <label>
-        <span>State:</span>
-        <input type="text" name="stateProvince" placeholder="Enter state"/>
-    </label>
-    <label>
-        <span>&nbsp;</span><input type="submit" value="Submit">
-    </label>
+    body {
+        font-family: "Courier New", monospace;
+        max-width: 800 px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #e8d5b7;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #999;
+        padding: 10px;
+    }
+
+    th {
+        background-color: #ddd;
+    }
+
+</style>
+</head>
+<body>
+
+<h1 text-align="center">🕊️ Submit Bird Sighting 🕊️</h1>
+<!-- got all emojis from https://emojiterra.com/dove/ -->
+
+<form action="/birds.html" method="get">
+    <p>
+        <b>Species:</b><br>
+        <input type="text" name="species" size="50" placeholder="Enter species" required/>
+    </p>
+    <p>
+        <b>State:</b><br>
+        <input type="text" name="stateProvince" size="50" placeholder="Enter state" required/>
+    </p>
+    <p>
+        <input type="submit" value="Submit">
+    </p>
 </form>
 
-<iframe frameBorder="0" name="results_iframe" style="width:100%; height:400px;"></iframe>
+<p><b>Other Links:</b></p>
+<p><a href="index.html">Bird Sightings by State</a></p>
+<p><a href="biome.html">Bird Sightings by Biome</a></p>
+
+<p><b>Author:</b> Shane McVeigh</p>
+
 </body>
 </html>

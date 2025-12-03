@@ -5,25 +5,25 @@
     <link type="text/css" rel="stylesheet" href="elegant-aero.css" />
     <style>
         body {
-            background-image: url("background.jpg");
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: auto;
-            background-attachment: fixed;
-            background-color: white;
+            font-family: "Courier New", monospace;
+            max-width: 800 px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #e8d5b7;
         }
 
-        form.elegant-aero {
-            width: 600px;
-            margin: 1em auto;
-            padding: 1em;
-            background: #FFFFFF;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        form.elegant-aero input[type="text"] {
-            width: 90%;
-            padding: 6px;
-            font-size: 14px;
+        th, td {
+            border: 1px solid #999;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #ddd;
         }
 
         iframe {
@@ -36,25 +36,24 @@
     </style>
 </head>
 <body>
-<h2 style="text-align:center;">Check Bird Sightings by Biome</h2>
+<h1 text-align="center">🦚 Bird Sightings by Biome 🦚</h1>
 
-<form action="/biome_results.html" method="get" target="results_iframe" class="elegant-aero">
-    <label>
-        <span>Biome (Full Name):</span>
-        <input type="text" name="biome" placeholder="e.g. Central Corn Belt Plains" required />
-    </label>
-    <label>
-        <span>Species (Scientific Name):</span>
-        <input type="text" name="species" placeholder="e.g. Cardinalis cardinalis" required />
-    </label>
-    <label>
+<form action="/biome_results.html" method="get" target="results_iframe">
+    <p>
+        <span>Biome (Full Name):</span><br>
+        <input type="text" name="biome" size="50" placeholder="e.g. Central Corn Belt Plains" required />
+    </p>
+    <p>
+        <span>Species (Scientific Name):</span><br>
+        <input type="text" name="species" size="50" placeholder="e.g. Cardinalis cardinalis" required />
+    </p>
+    <p>
         <span></span>
         <input type="submit" value="Submit" />
-    </label>
+    </p>
 </form>
 
-<p style="text-align:left; margin-top: 1.5em; font-size: 15px;">
-    Example Queries below. A full list of the biome names and map are included in this pdf document:
+<p><b>Example Queries below.</b> A full list of the biome names and map are included in this pdf document:
     <a href="https://dmap-prod-oms-edc.s3.us-east-1.amazonaws.com/ORD/Ecoregions/cec_na/NA_LEVEL_III.pdf"
        target="_blank"
        style="color: #0033cc; text-decoration: underline;">
@@ -62,10 +61,10 @@
     </a>
 </p>
 
-<table class="examples">
+<table>
     <tr>
         <th>Biome</th>
-        <th>Species</th>
+        <th>🦉 Species 🦉</th>
     </tr>
     <tr><td>Central Corn Belt Plains</td><td>Cardinalis cardinalis</td></tr>
     <tr><td>Central Corn Belt Plains</td><td>Junco hyemalis</td></tr>
@@ -79,6 +78,13 @@
     <tr><td>South Central Plains</td><td>Aythya affinis</td></tr>
 </table>
 
-<iframe name="results_iframe"></iframe>
+<iframe name="results_iframe" width="100%" height="400"></iframe>
+
+<p><b>Other Links:</b></p>
+<p><a href="index.html">Bird Sightings by State</a></p>
+<p><a href="submit-birds.html">Submit Your Own Bird Sighting</a></p>
+
+<p><b>Author:</b> Shane McVeigh</p>
+
 </body>
 </html>

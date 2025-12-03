@@ -2,18 +2,33 @@
 <html>
   <head>
     <title>Bird Sightings</title>
-    <link type="text/css" rel="stylesheet" href="table.css" />
+    <style>
+        body {
+            font-family: "Courier New", monospace;
+            max-width: 800 px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #e8d5b7;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #ddd;
+        }
+    </style>
   </head>
   <body>
-    <div style="margin-left:275px;margin-right:auto;display:inline-block;box-shadow: 10px 10px 5px #888888;
-                border:1px solid #000000;
-                border-radius: 9px;
-                background:white">
-      &nbsp;Bird Sightings in {{biome}} for {{species}}&nbsp;
-    </div>
-
-    <p style="margin-bottom:10px">
-      <table class="CSS_Table_Example" style="width:60%;margin:auto;">
+    <h2 text-align="center">Bird Sightings in {{biome}} for {{species}}</h2>
+      <table>
         <tr>
           <th>Biome</th>
           <th>Species</th>
@@ -25,6 +40,5 @@
           <td>{{sightings}}</td>
         </tr>
       </table>
-    </p>
   </body>
 </html>

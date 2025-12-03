@@ -193,7 +193,17 @@ spark-submit \
 
 pm2 start app.js --name smcveigh_app -- 3007 http://ec2-34-230-47-10.compute-1.amazonaws.com:8070/
 
-(Monitor Kafka Topic)
+[ec2-user@ip-172-31-23-66 birdapp]$ pm2 start app.js --name smcveigh_app -- 3007 http://ec2-34-230-47-10.compute-1.amazonaws.com:8070/
+[PM2] Starting /home/ec2-user/smcveigh/birdapp/app.js in fork_mode (1 instance)
+[PM2] Done.
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤  │
+│ 4  │ smcveigh_app       │ fork     │ 0    │ online    │ 0%       │ 19.3mb   │  │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+
+
+(36) (Monitor Kafka Topic)
 ssh hadoop@ec2-34-230-47-10.compute-1.amazonaws.com
 cd kafka/bin/
 kafka-console-consumer.sh --bootstrap-server boot-public-byg.mpcs53014kafka.2siu49.c2.kafka.us-east-1.amazonaws.com:9196 --consumer.config ~/kafka.client.properties --topic smcveigh_bird_observations --from-beginning

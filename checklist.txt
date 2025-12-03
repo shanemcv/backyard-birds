@@ -189,6 +189,10 @@ spark-submit \
 (c) http://ec2-52-20-203-80.compute-1.amazonaws.com:3007/submit-birds.html 
 [For submitting bird observations to speed layer, this can be combined with (a) to view updates in real time]
 
+(35) To permanently run the web app, do the following
+
+pm2 start app.js --name smcveigh_app -- 3007 http://ec2-34-230-47-10.compute-1.amazonaws.com:8070/
+
 (Monitor Kafka Topic)
 ssh hadoop@ec2-34-230-47-10.compute-1.amazonaws.com
 cd kafka/bin/

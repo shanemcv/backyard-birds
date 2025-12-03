@@ -47,7 +47,7 @@ I used the script ingest_biomes.hql (located in project folder) to create the bi
 
 (11) Need to join the birds and biomes to map biome lookup
 Reference: join_flights_to_weather.hql from lecture 3 files
-Created join_birds to biomes and ran beeline (step 6) and processed the table
+Created join_birds_to_biomes.hql and ran beeline (step 6) and processed the table
 
 (12) Pre-compute batches and store them in hbase
 This was done just with the route summary in the flights and weather example 
@@ -150,7 +150,7 @@ http://ec2-52-20-203-80.compute-1.amazonaws.com:3007/index.html
 Should get 11339
 
 (30) Whenever changes are made to the app, run
-(a) scp -r /home/shane/Documents/mpcs53014/birdapp ec2-user@ec2-52-20-203-80.compute-1.amazonaws.com:/home/ec2-user/smcveigh/
+(a) scp -r /home/shane/Documents/mpcs53014/project/birdapp ec2-user@ec2-52-20-203-80.compute-1.amazonaws.com:/home/ec2-user/smcveigh/
 (b) On ec2 web-server, npm install, then:
 (c) node app.js 3007 http://ec2-34-230-47-10.compute-1.amazonaws.com:8070
 (d) http://ec2-52-20-203-80.compute-1.amazonaws.com:3007/index.html webpage in local browser

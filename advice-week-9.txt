@@ -1,0 +1,8 @@
+(1) Writeup of architecture and design - include in README
+Also go over what you didn't do
+go through the process and make sure you get credit for anything 'good' in the application
+
+(2) Include video of final project
+Walk through and run examples
+
+(3) Not a bad idea to leave webapp running (Spertus will give instructions on nohup or no process manager)

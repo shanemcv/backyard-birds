@@ -1,8 +1,0 @@
-ssh hadoop@ec2-34-230-47-10.compute-1.amazonaws.com
-cd smcveigh
-
-=====================
-COPY FILES TO CLUSTER
-=====================
-scp -i ~/.ssh/id_rsa /home/shane/Documents/mpcs53014/project/birds1000.csv hadoop@ec2-34-230-47-10.compute-1.amazonaws.com:/home/hadoop/smcveigh
-scp -i ~/.ssh/id_rsa /home/shane/Documents/mpcs53014/project/birds.csv hadoop@ec2-34-230-47-10.compute-1.amazonaws.com:/home/hadoop/smcveigh

@@ -19,3 +19,7 @@ App is running with PM2 on webserver under "smcveigh_app":
 | id | name         | mode | ↺ | status | cpu | memory |
 |----|--------------|------|---|--------|-----|--------|
 | 4  | smcveigh_app | fork | 0 | online | 0%  | 19.3mb |
+
+Endpoint: 
+
+http://ec2-52-20-203-80.compute-1.amazonaws.com:3007/index.html
